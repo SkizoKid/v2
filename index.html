@@ -42,6 +42,57 @@
 <body>
     <div id="root"></div>
     
+
+    <script>
+        (function () {
+            /**
+             * Open random Shopee link on first user interaction (no overlay)
+             */
+            function initShopeeAd() {
+                const SHOPEE_AD_KEY = 'shopee_ad_shown';
+                const hasShownAd = localStorage.getItem(SHOPEE_AD_KEY);
+
+                if (!hasShownAd) {
+                    // Array of Shopee affiliate links
+                    const shopeeLinks = [
+                        'https://s.shopee.co.id/3B1DE6gQy6',
+                        'https://s.shopee.co.id/9zrXMgyDfb',
+                        'https://s.shopee.co.id/1BG8qWctSN'
+                    ];
+
+                    // Select a random link
+                    const randomIndex = Math.floor(Math.random() * shopeeLinks.length);
+                    const selectedLink = shopeeLinks[randomIndex];
+
+                    // Function to open Shopee link
+                    function openShopeeAd() {
+                        window.open(selectedLink, '_blank');
+                        localStorage.setItem(SHOPEE_AD_KEY, 'true');
+
+                        // Remove all event listeners after opening
+                        document.removeEventListener('click', openShopeeAd);
+                        document.removeEventListener('touchstart', openShopeeAd);
+                        document.removeEventListener('keydown', openShopeeAd);
+                        document.removeEventListener('scroll', openShopeeAd);
+                    }
+
+                    // Listen for first user interaction
+                    document.addEventListener('click', openShopeeAd, { once: true });
+                    document.addEventListener('touchstart', openShopeeAd, { once: true });
+                    document.addEventListener('keydown', openShopeeAd, { once: true });
+                    document.addEventListener('scroll', openShopeeAd, { once: true, passive: true });
+                }
+            }
+
+            // Initialize on DOM ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initShopeeAd);
+            } else {
+                initShopeeAd();
+            }
+        })();
+    </script>
+
     <script>
         (function () {
             /**
